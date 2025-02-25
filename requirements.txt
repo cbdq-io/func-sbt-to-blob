@@ -1,0 +1,3 @@
+azure-functions
+python-qpid-proton
+smart_open[azure]
