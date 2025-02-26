@@ -1,3 +1,7 @@
+.EXPORT_ALL_VARIABLES:
+
+TAG = 0.1.0
+
 all: lint clean build test
 
 build:
@@ -12,6 +16,9 @@ lint:
 	yamllint -s .
 	isort -v .
 	flake8
+
+tag:
+	@echo $(TAG)
 
 test:
 	docker compose run emulators
