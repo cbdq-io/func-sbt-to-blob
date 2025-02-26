@@ -1,12 +1,17 @@
 Feature: Test the Container
-    Scenario: System Under Test
+    Scenario Outline: System Under Test
         Given the TestInfra host with URL "docker://sut" is ready
-        When the TestInfra file is /home/site/wwwroot/function_app.py
+        When the TestInfra file is <path>
         Then the TestInfra file is present
         And the TestInfra file type is file
         And the TestInfra file owner is app
         And the TestInfra file group is app
-        And the TestInfra file mode is 0o755
+
+        Examples:
+            | path                                      |
+            | /home/site/wwwroot/host.json              |
+            | /home/site/wwwroot/SBT2Blob/__init__.py   |
+            | /home/site/wwwroot/SBT2Blob/function.json |
 
     Scenario Outline: Python Packages
         Given the TestInfra host with URL "docker://sut" is ready

@@ -14,11 +14,11 @@ import lorem
 import smart_open
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
+from SBT2Blob import ConnectionStringHelper
+from SBT2Blob import main
 from proton import Message
 from proton.utils import BlockingConnection
 from pytest_bdd import given, parsers, scenario, then, when
-
-from function_app import ConnectionStringHelper
 
 CONTAINER_NAME = 'mycontainer'
 MESSAGE_COUNT = 512
@@ -110,7 +110,6 @@ def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
 @then('run the function')
 def _(STORAGE_ACCOUNT_CONNECTION_STRING: str, SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
     """run the function."""
-    from function_app import main
     timer = type('MockTimer', (object, ), {'past_due': False})()
     os.environ['CONTAINER_NAME'] = CONTAINER_NAME
     os.environ['PATH_FORMAT'] = 'year=YYYY/month=MM/day=dd/hour=HH'
