@@ -35,14 +35,15 @@ jobs:
           python-version: '3.12'
 
       - name: Requirements
-        run: |
-          make prereqs
+        run: make prereqs
 
       - name: Lint
         run: make lint
 
       - name: Build
-        run: make build
+        run: |
+          make build
+          docker images
 
       - name: Test
         run: make test
