@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/azure-functions/python:4-python3.12
 
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
 COPY --chown=app:app --chmod=644 constraints.txt /home/app/constraints.txt
 COPY --chown=app:app --chmod=644 requirements.txt /home/app/requirements.txt
 
@@ -12,4 +15,4 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-COPY --chown=app:app --chmod=755 function_app.py /home/app/function_app.py
+COPY --chown=app:app . /home/site/wwwroot
