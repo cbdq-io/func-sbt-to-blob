@@ -1,3 +1,8 @@
+.EXPORT_ALL_VARIABLES:
+
+COMPOSE_FILE = tests/resources/docker-compose.yaml
+TAG = 0.1.0
+
 all: lint clean build test
 
 build:
@@ -13,11 +18,14 @@ lint:
 	isort -v .
 	flake8
 
+tag:
+	@echo $(TAG)
+
 test:
 	docker compose run emulators
 	PYTHONPATH=. pytest
 
 prereqs:
-	docker run -it mcr.microsoft.com/azure-functions/python:4-python3.12 pip freeze > constraints.txt
+	docker run mcr.microsoft.com/azure-functions/python:4-python3.12 pip freeze > constraints.txt
 	pip install -Uc constraints.txt -r requirements.txt -r requirements-dev.txt
 	pip check
