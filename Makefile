@@ -12,6 +12,9 @@ build:
 clean:
 	docker compose down -t 0 --remove-orphans
 
+cleanall: clean
+	docker system prune -a --volumes --force
+
 lint:
 	docker run --rm -i hadolint/hadolint < Dockerfile
 	yamllint -s .

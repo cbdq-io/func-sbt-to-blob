@@ -1,7 +1,7 @@
 Feature: Test the Container
     Scenario: System Under Test
         Given the TestInfra host with URL "docker://sut" is ready
-        When the TestInfra file is /home/app/function_app.py
+        When the TestInfra file is /home/site/wwwroot/function_app.py
         Then the TestInfra file is present
         And the TestInfra file type is file
         And the TestInfra file owner is app
