@@ -403,7 +403,9 @@ def main(timer: func.TimerRequest) -> None:
     subscription_name = get_environment_variable('SUBSCRIPTION_NAME', required=True)
     topics_dir = get_environment_variable('TOPICS_DIR', default='topics')
     topic_name = get_environment_variable('TOPIC_NAME', required=True)
-    logger.info(f'Creating an extractor for {topic_name}/{subscription_name}.')
+    log_message = f'Creating an extractor for {topic_name}/{subscription_name}'
+    log_message += f'({os.getenv("ALLOWED_SASL_MECHS")}).'
+    logger.info(log_message)
     extractor = Extractor(sbns_connection_string, topic_name, subscription_name)
     loader = Loader(
         sa_connection_string,

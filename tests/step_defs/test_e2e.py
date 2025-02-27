@@ -14,11 +14,11 @@ import lorem
 import smart_open
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
-from SBT2Blob import ConnectionStringHelper
-from SBT2Blob import main
 from proton import Message
 from proton.utils import BlockingConnection
 from pytest_bdd import given, parsers, scenario, then, when
+
+from SBT2Blob import ConnectionStringHelper, main
 
 CONTAINER_NAME = 'mycontainer'
 MESSAGE_COUNT = 512
