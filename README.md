@@ -23,8 +23,6 @@ loaded to will be something like:
 
 ## Optional Environment Variables
 
-- `ALLOWED_SASL_MECHS`: A space-separated string specifying the SASL mechanisms
-  allowed for connecting to Service Bus.
 - `PATH_FORMAT`: The configuration to set the format of the data directories.
   The format set in this configuration converts the timestamp of the latest
   message in the block written to proper directory strings.  Within the

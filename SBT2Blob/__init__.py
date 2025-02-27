@@ -4,201 +4,14 @@ import datetime
 import logging
 import os
 import sys
-from urllib.parse import urlparse
 
 import azure.functions as func
 import azure.storage
 import azure.storage.blob
-import proton
 import smart_open
-from azure.core.utils import parse_connection_string
-from proton import Message
-from proton.utils import BlockingConnection
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 
 MAX_MESSAGES_IN_BATCH = 500
-
-
-class ConnectionStringHelper:
-    """
-    A class for handling Azure Service Bus Connection Strings.
-
-    Attributes
-    ----------
-    sbus_connection_string : str
-        The value provided by the constructor.
-
-    Parameters
-    ----------
-    connection_string : str
-        An Azure Service Bus connection string.
-    """
-
-    def __init__(self, sbus_connection_string: str) -> None:
-        self.sbus_connection_string = sbus_connection_string
-        self.port(5671)
-        self.protocol('amqps')
-        self.parse()
-        self.netloc(f'{self.protocol()}://{self.hostname()}:{self.port()}')
-        url = f'{self.protocol()}://{self.key_name()}:{self.key_value()}'
-        url += f'@{self.hostname()}:{self.port()}'
-        self.amqp_url(url)
-
-    def amqp_url(self, amqp_url: str = None) -> str:
-        """
-        Get or set an AMQP URL.
-
-        Parameters
-        ----------
-        amqp_url : str, optional
-            The URL to be set, by default None
-
-        Returns
-        -------
-        str
-            The set URL.
-        """
-        if amqp_url is not None:
-            self._amqp_url = amqp_url
-        return self._amqp_url
-
-    def hostname(self, hostname: str = None) -> str:
-        """
-        Get or set the host name.
-
-        Parameters
-        ----------
-        hostname : str, optional
-            The host name to be set, by default None
-
-        Returns
-        -------
-        str
-            The set host name.
-        """
-        if hostname is not None:
-            self._hostname = hostname
-        return self._hostname
-
-    def key_name(self, key_name: str = None) -> str:
-        """
-        Get or set the key name.
-
-        Parameters
-        ----------
-        key_name : str
-            The key name to be set.
-
-        Returns
-        -------
-        str
-            The key name that is set.
-        """
-        if key_name is not None:
-            self._key_name = key_name
-        return self._key_name
-
-    def key_value(self, key_value: str = None) -> str:
-        """
-        Get or set the key value.
-
-        Parameters
-        ----------
-        key_value : str
-            The key value to be set.
-
-        Returns
-        -------
-        str
-            The key value that is set.
-        """
-        if key_value is not None:
-            self._key_value = key_value
-        return self._key_value
-
-    def netloc(self, netloc: str = None) -> str:
-        """
-        Get or set the netloc.
-
-        Parameters
-        ----------
-        netloc : str, optional
-            The value to set.
-
-        Returns
-        -------
-        str
-            The currently set value.
-        """
-        if netloc is not None:
-            self._netloc = netloc
-
-        return self._netloc
-
-    def parse(self) -> None:
-        """
-        Parse the connection string.
-
-        Raises
-        ------
-        ValueError
-            If mandatory components are missing in the connection string.
-        """
-        conn_str_components = dict(parse_connection_string(self.sbus_connection_string))
-        use_development_emulator = conn_str_components.get('usedevelopmentemulator', 'False').capitalize()
-        use_development_emulator = use_development_emulator == 'True'
-
-        if use_development_emulator:
-            self.port(5672)
-            self.protocol('amqp')
-
-        try:
-            endpoint = conn_str_components['endpoint']
-            url = urlparse(endpoint)
-            self.hostname(url.netloc)
-            self.key_name(conn_str_components['sharedaccesskeyname'])
-            self.key_value(conn_str_components['sharedaccesskey'])
-        except KeyError:
-            raise ValueError(f'Connection string "{self.sbus_connection_string}" is invalid.')
-
-    def port(self, port: int = None) -> int:
-        """
-        Get or set the port number.
-
-        Parameters
-        ----------
-        port : int
-            The port number to be set.
-
-        Returns
-        -------
-        int
-            The port number that is set.
-        """
-        if port is not None:
-            self._port = port
-
-        return self._port
-
-    def protocol(self, protocol: str = None) -> str:
-        """
-        Get or set the protocol to be used for connecting to AMQP.
-
-        Valid values are amqp or amqps.
-
-        Parameters
-        ----------
-        protocol : str, optional
-            The protocol to be used, by default None
-
-        Returns
-        -------
-        str
-            The protocol that has been set.
-        """
-        if protocol is not None:
-            self._protocol = protocol
-
-        return self._protocol
 
 
 class LoadURI:
@@ -255,33 +68,22 @@ class Extractor:
 
     def __init__(self, connection_string: str, topic_name: str, subscription_name: str):
         self.finished = False
-        conn_details = ConnectionStringHelper(connection_string)
-        netloc = conn_details.netloc()
-        allowed_mechs = os.getenv('ALLOWED_SASL_MECHS')
-        logging.debug(f'Connecting to "{netloc}", allowed SASL mechs "{allowed_mechs}"...')
-        self.connection = BlockingConnection(
-            netloc,
-            allowed_mechs=allowed_mechs,
-            password=conn_details.key_value(),
-            user=conn_details.key_name()
-        )
-        address = f'{topic_name}/Subscriptions/{subscription_name}'
-        logging.debug(f'Creating a receiver for "{address}"...')
-        self.receiver = self.connection.create_receiver(
-            address=address
-        )
+        logging.debug('Connecting to the Service Bus client...')
+        self.client = ServiceBusClient.from_connection_string(connection_string)
+        logging.debug(f'Creating a receiver for "{topic_name}/{subscription_name}"...')
+        self.receiver = self.client.get_subscription_receiver(topic_name, subscription_name)
 
-    def accept_messages(self, messages: list[Message]) -> None:
+    def accept_messages(self, messages: list[ServiceBusMessage]) -> None:
         """Accept the messages in the current buffer."""
-        if len(messages) > 0:
-            self.receiver.settle()
+        for message in messages:
+            self.receiver.complete_message(message)
 
     def close(self) -> None:
         """Close the receiver and the connection."""
         self.receiver.close()
-        self.connection.close()
+        self.client.close()
 
-    def get_messages(self) -> list[Message]:
+    def get_messages(self) -> list[ServiceBusMessage]:
         """
         Get messages from the topic/subscription.
 
@@ -290,21 +92,13 @@ class Extractor:
         list
             A list of messages.
         """
-        messages = []
+        messages = self.receiver.receive_messages(
+            max_message_count=MAX_MESSAGES_IN_BATCH,
+            max_wait_time=5
+        )
 
-        while not self.finished:
-            try:
-                message = self.receiver.receive(5)
-            except proton._exceptions.Timeout:
-                message = None
-
-            if message is None:
-                self.finished = True
-            else:
-                messages.append(message)
-
-                if len(messages) >= MAX_MESSAGES_IN_BATCH:
-                    break
+        if len(messages) < MAX_MESSAGES_IN_BATCH:
+            self.finished = True
 
         return messages
 
@@ -324,22 +118,21 @@ class Loader:
         }
         self.path = None
 
-    def load(self, messages: list[Message]) -> None:
+    def load(self, messages: list[ServiceBusMessage]) -> None:
         """
         Load messages into blob storage.
 
         Parameters
         ----------
-        messages : list[Messge]
+        messages : list[ServiceBusMessage]
             The messages to be loaded.
         """
         if len(messages) == 0:
             return
 
         last_message_in_batch = messages[-1]
-        timestamp = last_message_in_batch.creation_time
-        timestamp = datetime.datetime.fromtimestamp(timestamp)
-        offset = last_message_in_batch.annotations['x-opt-enqueue-sequence-number']
+        timestamp = last_message_in_batch.enqueued_time_utc
+        offset = last_message_in_batch.sequence_number
         uri = LoadURI(
             container_name=self.container_name,
             topics_directory=self.topics_dir,
@@ -352,12 +145,7 @@ class Loader:
 
         with smart_open.open(uri, 'w', transport_params=self.transport_params) as stream:
             for message in messages:
-                body = message.body
-
-                if isinstance(body, memoryview):
-                    body = body.tobytes().decode()
-                elif isinstance(body, bytes):
-                    body = body.decode()
+                body = str(message)
                 stream.write(body + '\n')
 
 
