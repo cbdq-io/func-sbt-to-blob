@@ -37,3 +37,14 @@ loaded to will be something like:
   Default is "".
 - `TOPICS_DIR`: The directory within the specified container to load the
   topics to.  Default is `topics`.
+
+## Troubleshooting
+
+We use the appservice base image to build on top of.  This enables the
+Kudo/SSH endpoint so you can connect to the running container with the
+URL:
+
+  https://_app_name_.scm.azurewebsites.net/
+
+Where _app_name_ is the unique name of your deployed app.  In the menu,
+select SSH to connect to your running container.
