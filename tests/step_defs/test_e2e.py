@@ -13,12 +13,11 @@ import azure.storage.blob
 import lorem
 import smart_open
 from azure.core.exceptions import ResourceExistsError
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from azure.storage.blob import BlobServiceClient
-from proton import Message
-from proton.utils import BlockingConnection
 from pytest_bdd import given, parsers, scenario, then, when
 
-from SBT2Blob import ConnectionStringHelper, main
+from SBT2Blob import main
 
 CONTAINER_NAME = 'mycontainer'
 MESSAGE_COUNT = 512
@@ -85,12 +84,10 @@ def _(blob_client: BlobServiceClient):
 @then('produce the messages to the topic')
 def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
     """produce the messages to the topic."""
-    conn_str = ConnectionStringHelper(SERVICE_BUS_EMULATOR_CONNECTION_STRING)
-    url = conn_str.amqp_url()
-    logger.debug(f'Opening a connection to "{url}"...')
-    conn = BlockingConnection(url)
+    logger.debug('Creating a Service Bus client...')
+    client = ServiceBusClient.from_connection_string(SERVICE_BUS_EMULATOR_CONNECTION_STRING)
     logger.debug(f'Creating a sender for "{TOPIC_NAME}"...')
-    sender = conn.create_sender(TOPIC_NAME)
+    sender = client.get_topic_sender(TOPIC_NAME)
 
     for idx, message in enumerate(range(MESSAGE_COUNT)):
         message = lorem.sentence()
@@ -98,13 +95,13 @@ def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
             'message_number': idx,
             'payload': message
         }
-        message = Message(body=json.dumps(message_body).encode())
-        sender.send(message)
+        message = ServiceBusMessage(body=json.dumps(message_body).encode())
+        sender.send_messages(message)
         logger.debug(f'Sent message {idx}/{MESSAGE_COUNT}.')
         time.sleep(0.05)
 
     sender.close()
-    conn.close()
+    client.close()
 
 
 @then('run the function')

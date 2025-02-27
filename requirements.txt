@@ -2,5 +2,5 @@
 # The Python Worker is managed by the Azure Functions platform
 # Manually managing azure-functions-worker may cause unexpected issues
 azure-functions
-python-qpid-proton
+azure-servicebus
 smart_open[azure]
