@@ -390,7 +390,8 @@ def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
     logging.basicConfig()
     logger = logging.getLogger(os.path.basename(__file__))
-    logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
+    logger.setLevel(os.getenv('LOG_LEVEL', 'DEBUG'))
+    logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
 
     if timer.past_due:
         logger.warning('The timer is past due!')
@@ -402,6 +403,7 @@ def main(timer: func.TimerRequest) -> None:
     subscription_name = get_environment_variable('SUBSCRIPTION_NAME', required=True)
     topics_dir = get_environment_variable('TOPICS_DIR', default='topics')
     topic_name = get_environment_variable('TOPIC_NAME', required=True)
+    logger.info(f'Creating an extractor for {topic_name}/{subscription_name}.')
     extractor = Extractor(sbns_connection_string, topic_name, subscription_name)
     loader = Loader(
         sa_connection_string,
