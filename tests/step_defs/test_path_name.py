@@ -1,8 +1,9 @@
 """Path Name feature tests."""
 import datetime
 
-from SBT2Blob import LoadURI
 from pytest_bdd import given, parsers, scenario, then, when
+
+from SBT2Blob import LoadURI
 
 
 @scenario('path_name.feature', 'Path Name')

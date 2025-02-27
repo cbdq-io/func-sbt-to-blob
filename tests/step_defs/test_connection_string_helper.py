@@ -1,7 +1,8 @@
 """Connection String Helper feature tests."""
 
-from SBT2Blob import ConnectionStringHelper
 from pytest_bdd import given, parsers, scenario, then, when
+
+from SBT2Blob import ConnectionStringHelper
 
 
 @scenario('connection-string-helper.feature', 'Invalid Connection Strings')
