@@ -256,13 +256,17 @@ class Extractor:
     def __init__(self, connection_string: str, topic_name: str, subscription_name: str):
         self.finished = False
         conn_details = ConnectionStringHelper(connection_string)
+        netloc = conn_details.netloc()
+        allowed_mechs = os.getenv('ALLOWED_SASL_MECHS')
+        logging.debug(f'Connecting to "{netloc}", allowed SASL mechs "{allowed_mechs}"...')
         self.connection = BlockingConnection(
-            url=conn_details.netloc(),
-            allowed_mechs=os.getenv('ALLOWED_SASL_MECHS'),
+            netloc,
+            allowed_mechs=allowed_mechs,
             password=conn_details.key_value(),
             user=conn_details.key_name()
         )
         address = f'{topic_name}/Subscriptions/{subscription_name}'
+        logging.debug(f'Creating a receiver for "{address}"...')
         self.receiver = self.connection.create_receiver(
             address=address
         )
@@ -344,6 +348,7 @@ class Loader:
         )
         uri = uri.uri(offset=offset, timestamp=timestamp)
         self.path = uri
+        logging.debug(f'Opening path to "{uri}"...')
 
         with smart_open.open(uri, 'w', transport_params=self.transport_params) as stream:
             for message in messages:
@@ -388,9 +393,16 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
 
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
-    logging.basicConfig()
-    logger = logging.getLogger(os.path.basename(__file__))
-    logger.setLevel(os.getenv('LOG_LEVEL', 'DEBUG'))
+    log_level = os.getenv('LOG_LEVEL', 'WARN')
+
+    if log_level == 'DEBUG':
+        logging.basicConfig(level=logging.DEBUG)
+        logger = logging.getLogger(os.path.basename(__file__))
+    else:
+        logging.basicConfig()
+        logger = logging.getLogger(os.path.basename(__file__))
+        logger.setLevel(log_level)
+
     logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
 
     if timer.past_due:
