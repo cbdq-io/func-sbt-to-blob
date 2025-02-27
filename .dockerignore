@@ -1,5 +1,7 @@
+**/__pycache__
 .coverage
 .devcontainer
+.dockerignore
 .git
 .gitattributes
 .github
@@ -9,6 +11,5 @@
 Dockerfile
 Makefile
 README.md
-__pycache__
 setup.cfg
 tests
