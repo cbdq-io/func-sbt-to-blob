@@ -9,7 +9,8 @@ import azure.functions as func
 import azure.storage
 import azure.storage.blob
 import smart_open
-from azure.servicebus import ServiceBusClient, ServiceBusMessage
+from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
+                              ServiceBusMessage)
 
 MAX_MESSAGES_IN_BATCH = 500
 
@@ -72,6 +73,7 @@ class Extractor:
         self.client = ServiceBusClient.from_connection_string(connection_string)
         logging.debug(f'Creating a receiver for "{topic_name}/{subscription_name}"...')
         self.receiver = self.client.get_subscription_receiver(topic_name, subscription_name)
+        self.renewer = AutoLockRenewer()
 
     def accept_messages(self, messages: list[ServiceBusMessage]) -> None:
         """Accept the messages in the current buffer."""
@@ -80,6 +82,7 @@ class Extractor:
 
     def close(self) -> None:
         """Close the receiver and the connection."""
+        self.renewer.close()
         self.receiver.close()
         self.client.close()
 
@@ -96,6 +99,11 @@ class Extractor:
             max_message_count=MAX_MESSAGES_IN_BATCH,
             max_wait_time=5
         )
+
+        # The default lock is 30 seconds.  We extend that to be auto-renewed for
+        # 2 minutes.
+        for message in messages:
+            self.renewer.register(self.receiver, message, max_lock_renewal_duration=120)
 
         if len(messages) < MAX_MESSAGES_IN_BATCH:
             self.finished = True
