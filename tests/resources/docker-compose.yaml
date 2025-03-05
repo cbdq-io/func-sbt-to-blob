@@ -1,0 +1,62 @@
+---
+services:
+  azurite:
+    command: azurite-blob --blobHost 0.0.0.0
+    container_name: azurite
+    healthcheck:
+      test: nc -nz 127.0.0.1 10000
+      interval: 1s
+      retries: 5
+      start_period: 10s
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - 10000:10000
+
+  emulators:
+    build: emulators
+    command:
+      - "-c"
+      - "Endpoint=sb://sbemulatorns;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      - "-f"
+      - "/usr/local/etc/Config.json"
+    container_name: emulators
+    depends_on:
+      azurite:
+        condition: service_healthy
+      sbemulatorns:
+        condition: service_started
+      sut:
+        condition: service_started
+    volumes:
+      - "./sbus-landing-config.json:/usr/local/etc/Config.json"
+
+  sbemulatorns:
+    container_name: "sbemulatorns"
+    depends_on:
+      sqledge:
+        condition: service_healthy
+    environment:
+      SQL_SERVER: sqledge
+      MSSQL_SA_PASSWORD: "Secret123"
+      ACCEPT_EULA: "Y"
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    ports:
+      - "5672:5672"
+      - "8080:8080"
+    volumes:
+      - "./sbus-landing-config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+
+  sqledge:
+    container_name: "sqledge"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Secret123"
+    healthcheck:
+      test: timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/1433'
+    image: "mcr.microsoft.com/azure-sql-edge:latest"
+
+  sut:
+    command: sleep infinity
+    container_name: sut
+    image: sbt-to-blob:latest
+    platform: linux/amd64

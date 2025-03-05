@@ -1,0 +1,15 @@
+**/__pycache__
+.coverage
+.devcontainer
+.dockerignore
+.git
+.gitattributes
+.github
+.gitignore
+.pytest_cache
+.yamllint
+Dockerfile
+Makefile
+README.md
+setup.cfg
+tests
