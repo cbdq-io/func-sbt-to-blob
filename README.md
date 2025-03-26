@@ -7,7 +7,7 @@ If `CONTAINER_NAME` is set to `mycontainer`, `TOPICS_DIR` is set to `topics`,
 `TOPIC_NAME` is set to `mytopic`, then the file path for the data to be
 loaded to will be something like:
 
-`azure://mycontainer/topics/year=2025/month=02/day=24/hour=11/mytopic+0000000000000000042.bin.gz`
+`azure://mycontainer/topics/mytopic/year=2025/month=02/day=24/hour=11/mytopic+0000000000000000042.bin.gz`
 
 ## Required Environment Variables
 
@@ -32,6 +32,7 @@ loaded to will be something like:
     - `dd` will be replaced by the zero padded day number.
     - `HH` will be replaced by the zero padded hour number.
     - `mm` will be replaced by the zero padded minute number.
+
   Default is "".
 - `TOPICS_DIR`: The directory within the specified container to load the
   topics to.  Default is `topics`.

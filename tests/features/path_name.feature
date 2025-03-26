@@ -11,5 +11,5 @@ Feature: Path Name
         Then the path is <uri>
 
         Examples:
-            | container_name | topics_dir | path_format                              | timestamp        | topic_name | offset | uri                                                                                                    |
-            | mycontainer    | topics     | year=YYYY/month=MM/day=dd/hour=HH/min=mm | 2025-02-24T15:56 | mytopic    | 42     | azure://mycontainer/topics/year=2025/month=02/day=24/hour=15/min=56/mytopic+0000000000000000042.bin.gz |
+            | container_name | topics_dir | path_format                              | timestamp        | topic_name | offset | uri                                                                                                            |
+            | mycontainer    | topics     | year=YYYY/month=MM/day=dd/hour=HH/min=mm | 2025-02-24T15:56 | mytopic    | 42     | azure://mycontainer/topics/mytopic/year=2025/month=02/day=24/hour=15/min=56/mytopic+0000000000000000042.bin.gz |
