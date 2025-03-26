@@ -189,16 +189,10 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
 
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
+    logging.basicConfig()
+    logger = logging.getLogger(os.path.basename(__file__))
     log_level = os.getenv('LOG_LEVEL', 'WARN')
-
-    if log_level == 'DEBUG':
-        logging.basicConfig(level=logging.DEBUG)
-        logger = logging.getLogger(os.path.basename(__file__))
-    else:
-        logging.basicConfig()
-        logger = logging.getLogger(os.path.basename(__file__))
-        logger.setLevel(log_level)
-
+    logger.setLevel(log_level)
     logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
 
     if timer.past_due:
