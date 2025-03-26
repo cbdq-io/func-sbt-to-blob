@@ -12,7 +12,8 @@ import smart_open
 from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
                               ServiceBusMessage)
 
-MAX_MESSAGES_IN_BATCH = 500
+MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
+WAIT_TIME_SECONDS = int(os.getenv('WAIT_TIME_SECONDS', '5'))
 
 
 class LoadURI:
@@ -97,7 +98,7 @@ class Extractor:
         """
         messages = self.receiver.receive_messages(
             max_message_count=MAX_MESSAGES_IN_BATCH,
-            max_wait_time=5
+            max_wait_time=WAIT_TIME_SECONDS
         )
 
         # The default lock is 30 seconds.  We extend that to be auto-renewed for

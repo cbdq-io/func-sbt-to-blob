@@ -13,6 +13,8 @@ loaded to will be something like:
 
 - `CONTAINER_NAME`: The container name within the storage account to load
   the data to.
+- `MAX_MESSAGES_IN_BATCH`: The maximum number of messages to extract from the
+  topic in a batch before loading onto the blob storage.  Default is 500.
 - `SERVICE_BUS_CONNECTION_STRING`:  The connection string to connect to Azure
   Service Bus.
 - `STORAGE_ACCOUNT_CONNECTION_STRING`: The connection string to connect to
@@ -20,6 +22,8 @@ loaded to will be something like:
 - `SUBSCRIPTION_NAME`:  The name of the subscription to use to extract from
   the topic.
 - `TOPIC_NAME`:  The name of the topic to extract from.
+- `WAIT_TIME_SECONDS`: The length of time in seconds to wait for messages on
+  the topic before continuing.  Default is 5.
 
 ## Optional Environment Variables
 
