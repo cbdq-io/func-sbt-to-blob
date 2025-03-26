@@ -36,7 +36,7 @@ class LoadURI:
         self.topics_directory = topics_directory
         self.topic_name = topic_name
         self.path_format = path_format
-        self.prefix = f'azure://{self.container_name}/{self.topics_directory}/'
+        self.prefix = f'azure://{self.container_name}/{self.topics_directory}/{self.topic_name}/'
 
     def uri(self, offset: int, timestamp: datetime.datetime) -> str:
         """
@@ -138,9 +138,9 @@ class Loader:
         if len(messages) == 0:
             return
 
-        last_message_in_batch = messages[-1]
-        timestamp = last_message_in_batch.enqueued_time_utc
-        offset = last_message_in_batch.sequence_number
+        first_message_in_batch = messages[-1]
+        timestamp = first_message_in_batch.enqueued_time_utc
+        offset = first_message_in_batch.sequence_number
         uri = LoadURI(
             container_name=self.container_name,
             topics_directory=self.topics_dir,
