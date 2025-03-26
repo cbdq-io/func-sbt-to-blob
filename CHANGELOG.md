@@ -7,6 +7,10 @@
 
 * Correct the implementation of the load path. BREAKING CHANGE:  This changes the format of the file path in the blob storage. [Ben Dalling]
 
+### Features
+
+* Add options to set MAX_MESSAGES_IN_BATCH and WAIT_TIME_SECONDS. [Ben Dalling]
+
 
 ## 0.1.0 (2025-03-05)
 
