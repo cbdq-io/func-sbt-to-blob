@@ -12,7 +12,8 @@ import smart_open
 from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
                               ServiceBusMessage)
 
-MAX_MESSAGES_IN_BATCH = 500
+MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
+WAIT_TIME_SECONDS = int(os.getenv('WAIT_TIME_SECONDS', '5'))
 
 
 class LoadURI:
@@ -36,7 +37,7 @@ class LoadURI:
         self.topics_directory = topics_directory
         self.topic_name = topic_name
         self.path_format = path_format
-        self.prefix = f'azure://{self.container_name}/{self.topics_directory}/'
+        self.prefix = f'azure://{self.container_name}/{self.topics_directory}/{self.topic_name}/'
 
     def uri(self, offset: int, timestamp: datetime.datetime) -> str:
         """
@@ -97,7 +98,7 @@ class Extractor:
         """
         messages = self.receiver.receive_messages(
             max_message_count=MAX_MESSAGES_IN_BATCH,
-            max_wait_time=5
+            max_wait_time=WAIT_TIME_SECONDS
         )
 
         # The default lock is 30 seconds.  We extend that to be auto-renewed for
@@ -138,9 +139,9 @@ class Loader:
         if len(messages) == 0:
             return
 
-        last_message_in_batch = messages[-1]
-        timestamp = last_message_in_batch.enqueued_time_utc
-        offset = last_message_in_batch.sequence_number
+        first_message_in_batch = messages[-1]
+        timestamp = first_message_in_batch.enqueued_time_utc
+        offset = first_message_in_batch.sequence_number
         uri = LoadURI(
             container_name=self.container_name,
             topics_directory=self.topics_dir,
@@ -189,16 +190,10 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
 
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
+    logging.basicConfig()
+    logger = logging.getLogger(os.path.basename(__file__))
     log_level = os.getenv('LOG_LEVEL', 'WARN')
-
-    if log_level == 'DEBUG':
-        logging.basicConfig(level=logging.DEBUG)
-        logger = logging.getLogger(os.path.basename(__file__))
-    else:
-        logging.basicConfig()
-        logger = logging.getLogger(os.path.basename(__file__))
-        logger.setLevel(log_level)
-
+    logger.setLevel(log_level)
     logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
 
     if timer.past_due:
