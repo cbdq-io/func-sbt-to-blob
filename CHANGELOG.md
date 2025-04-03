@@ -1,6 +1,13 @@
 # Changelog
 
 
+## Unreleased
+
+### Fix
+
+* Make the method of extracting messages from Service Bus more robust. [Ben Dalling]
+
+
 ## 0.2.0 (2025-03-26)
 
 ### Fix
