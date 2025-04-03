@@ -1,15 +1,9 @@
-**/__pycache__
-.coverage
-.devcontainer
-.dockerignore
-.git
-.gitattributes
-.github
-.gitignore
-.pytest_cache
-.yamllint
-Dockerfile
-Makefile
-README.md
-setup.cfg
-tests
+# Ignore everything
+**
+
+# Except the files/folders we need
+!SBT2Blob/function.json
+!SBT2Blob/__init__.py
+!host.json
+!requirements.txt
+!constraints.txt

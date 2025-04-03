@@ -1,5 +1,5 @@
 Feature: Test the Container
-    Scenario Outline: System Under Test
+    Scenario Outline: Present Files Owner By the App User
         Given the TestInfra host with URL "docker://sut" is ready
         When the TestInfra file is <path>
         Then the TestInfra file is present
@@ -12,6 +12,18 @@ Feature: Test the Container
             | /home/site/wwwroot/host.json              |
             | /home/site/wwwroot/SBT2Blob/__init__.py   |
             | /home/site/wwwroot/SBT2Blob/function.json |
+
+    Scenario Outline: Absent Files
+        Given the TestInfra host with URL "docker://sut" is ready
+        When the TestInfra file is <path>
+        Then the TestInfra file is absent
+
+        Examples:
+            | path                                    |
+            | /home/site/wwwroot/CHANGELOG.md         |
+            | /home/site/wwwroot/LICENSE              |
+            | /home/site/wwwroot/requirements-dev.txt |
+            | /home/site/wwwroot/.gitchangelog.rc     |
 
     Scenario Outline: Python Packages
         Given the TestInfra host with URL "docker://sut" is ready
