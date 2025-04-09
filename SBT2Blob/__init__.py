@@ -12,8 +12,11 @@ import smart_open
 from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
                               ServiceBusMessage)
 
+MAX_EMPTY_RECEIVES = int(os.getenv('MAX_EMPTY_RECEIVES', '3'))
 MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
 WAIT_TIME_SECONDS = int(os.getenv('WAIT_TIME_SECONDS', '5'))
+logging.basicConfig()
+logger = logging.getLogger(os.path.basename(__file__))
 
 
 class LoadURI:
@@ -70,11 +73,14 @@ class Extractor:
 
     def __init__(self, connection_string: str, topic_name: str, subscription_name: str):
         self.finished = False
-        logging.debug('Connecting to the Service Bus client...')
         self.client = ServiceBusClient.from_connection_string(connection_string)
-        logging.debug(f'Creating a receiver for "{topic_name}/{subscription_name}"...')
-        self.receiver = self.client.get_subscription_receiver(topic_name, subscription_name)
+        self.receiver = self.client.get_subscription_receiver(
+            topic_name,
+            subscription_name,
+            prefetch_count=MAX_MESSAGES_IN_BATCH * 2
+        )
         self.renewer = AutoLockRenewer()
+        self.empty_receive_count = 0
 
     def accept_messages(self, messages: list[ServiceBusMessage]) -> None:
         """Accept the messages in the current buffer."""
@@ -106,8 +112,13 @@ class Extractor:
         for message in messages:
             self.renewer.register(self.receiver, message, max_lock_renewal_duration=120)
 
-        if len(messages) < MAX_MESSAGES_IN_BATCH:
-            self.finished = True
+        if len(messages) == 0:
+            self.empty_receive_count += 1
+            logger.debug(f'No messages received.  Empty count: {self.empty_receive_count}')
+            if self.empty_receive_count >= MAX_EMPTY_RECEIVES:
+                self.finished = True
+        else:
+            self.empty_receive_count = 0
 
         return messages
 
@@ -150,7 +161,6 @@ class Loader:
         )
         uri = uri.uri(offset=offset, timestamp=timestamp)
         self.path = uri
-        logging.debug(f'Opening path to "{uri}"...')
 
         with smart_open.open(uri, 'w', transport_params=self.transport_params) as stream:
             for message in messages:
@@ -190,8 +200,6 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
 
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
-    logging.basicConfig()
-    logger = logging.getLogger(os.path.basename(__file__))
     log_level = os.getenv('LOG_LEVEL', 'WARN')
     logger.setLevel(log_level)
     logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
@@ -206,9 +214,6 @@ def main(timer: func.TimerRequest) -> None:
     subscription_name = get_environment_variable('SUBSCRIPTION_NAME', required=True)
     topics_dir = get_environment_variable('TOPICS_DIR', default='topics')
     topic_name = get_environment_variable('TOPIC_NAME', required=True)
-    log_message = f'Creating an extractor for {topic_name}/{subscription_name}'
-    log_message += f'({os.getenv("ALLOWED_SASL_MECHS")}).'
-    logger.info(log_message)
     extractor = Extractor(sbns_connection_string, topic_name, subscription_name)
     loader = Loader(
         sa_connection_string,
@@ -221,17 +226,9 @@ def main(timer: func.TimerRequest) -> None:
 
     while not extractor.finished:
         messages = extractor.get_messages()
-        logger.debug(f'Received {len(messages)} messages.')
         loader.load(messages)
-        logger.debug(f'Loaded {len(messages)} messages to "{loader.path}".')
-        logger.debug('Accepting the messages loaded...')
         extractor.accept_messages(messages)
-        logger.debug('Messages accepted.')
         message_count += len(messages)
-        logger.debug(f'{message_count:,} messages processed so far.')
-
-        if extractor.finished:
-            logger.debug(f'No more messages on the {topic_name} topic.')
 
     extractor.close()
-    logger.info(f'A total of {message_count:,} messages were loaded to blob storage.')
+    logger.info(f'A total of {message_count:,} messages were loaded to blob storage for {topic_name}.')

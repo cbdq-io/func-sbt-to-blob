@@ -5,6 +5,15 @@
 
 ### Fix
 
+* Tidy up the files on the image. [Ben Dalling]
+
+* Make the method of extracting messages from Service Bus more robust. [Ben Dalling]
+
+
+## 0.2.0 (2025-03-26)
+
+### Fix
+
 * Correct the implementation of the load path. BREAKING CHANGE:  This changes the format of the file path in the blob storage. [Ben Dalling]
 
 ### Features
