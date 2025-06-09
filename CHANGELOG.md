@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Fix
+
+* Resolve CVE-2025-4598. [Ben Dalling]
+
 ### Other
 
 * Ci: add a periodic Trivy scan. [Ben Dalling]
