@@ -1,6 +1,13 @@
 # Changelog
 
 
+## Unreleased
+
+### Other
+
+* Ci: add a periodic Trivy scan. [Ben Dalling]
+
+
 ## 0.2.1 (2025-04-09)
 
 ### Fix
