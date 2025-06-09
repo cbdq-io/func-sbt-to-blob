@@ -5,11 +5,17 @@
 
 ### Fix
 
+* Allow CVE-2024-45336, CVE-2024-45341, CVE-2025-22866 and CVE-2025-22871. [Ben Dalling]
+
 * Resolve CVE-2025-4598. [Ben Dalling]
 
-### Other
+### Build
 
-* Ci: add a periodic Trivy scan. [Ben Dalling]
+* Migrate to a containerised change log generator. [Ben Dalling]
+
+### Continuous Integration
+
+* Add a periodic Trivy scan. [Ben Dalling]
 
 
 ## 0.2.1 (2025-04-09)
@@ -23,16 +29,20 @@
 
 ## 0.2.0 (2025-03-26)
 
-### Fix
-
-* Correct the implementation of the load path. BREAKING CHANGE:  This changes the format of the file path in the blob storage. [Ben Dalling]
-
 ### Features
 
 * Add options to set MAX_MESSAGES_IN_BATCH and WAIT_TIME_SECONDS. [Ben Dalling]
 
+### Fix
+
+* Correct the implementation of the load path. BREAKING CHANGE:  This changes the format of the file path in the blob storage. [Ben Dalling]
+
 
 ## 0.1.0 (2025-03-05)
+
+### Features
+
+* Initial prototype. [Ben Dalling]
 
 ### Fix
 
@@ -44,12 +54,8 @@
 
 * Add required files and refactor the directory layout in the image. [Ben Dalling]
 
-### Features
+### Continuous Integration
 
-* Initial prototype. [Ben Dalling]
-
-### Other
-
-* Ci: Add GitHub workflows for CI/CD. [Ben Dalling]
+* Add GitHub workflows for CI/CD. [Ben Dalling]
 
 
