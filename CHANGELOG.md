@@ -3,7 +3,13 @@
 
 ## Unreleased
 
+### Features
+
+* Add alternative entrypoint. [James Loughlin]
+
 ### Fix
+
+* Allow CVE-2025-4673. [Ben Dalling]
 
 * Allow CVE-2024-45336, CVE-2024-45341, CVE-2025-22866 and CVE-2025-22871. [Ben Dalling]
 
@@ -16,6 +22,10 @@
 ### Continuous Integration
 
 * Add a periodic Trivy scan. [Ben Dalling]
+
+### Tests
+
+* Ensure the alternative entrypoint is available in the container. [Ben Dalling]
 
 
 ## 0.2.1 (2025-04-09)

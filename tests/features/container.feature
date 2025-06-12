@@ -12,6 +12,7 @@ Feature: Test the Container
             | /home/site/wwwroot/host.json              |
             | /home/site/wwwroot/SBT2Blob/__init__.py   |
             | /home/site/wwwroot/SBT2Blob/function.json |
+            | /usr/local/bin/multi-topic-entrypoint.py  |
 
     Scenario Outline: Absent Files
         Given the TestInfra host with URL "docker://sut" is ready
@@ -23,7 +24,6 @@ Feature: Test the Container
             | /home/site/wwwroot/CHANGELOG.md         |
             | /home/site/wwwroot/LICENSE              |
             | /home/site/wwwroot/requirements-dev.txt |
-            | /home/site/wwwroot/.gitchangelog.rc     |
 
     Scenario Outline: Python Packages
         Given the TestInfra host with URL "docker://sut" is ready
