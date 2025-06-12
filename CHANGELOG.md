@@ -17,6 +17,8 @@
 
 ### Build
 
+* Release/0.3.0. [James Loughlin]
+
 * Migrate to a containerised change log generator. [Ben Dalling]
 
 ### Continuous Integration
