@@ -22,18 +22,10 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up Python 3
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-
-      - name: Install Python Requirements
-        run: pip install gitchangelog pystache
-
       - name: Update Change Log
         run: |
           git pull
-          gitchangelog > CHANGELOG.md
+          docker run --quiet --rm --volume "${PWD}:/mnt/source" --workdir /mnt/source ghcr.io/cbdq-io/gitchangelog > CHANGELOG.md
 
       - name: Configure Git
         run: |
