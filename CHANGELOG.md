@@ -21,6 +21,10 @@
 
 * Add a periodic Trivy scan. [Ben Dalling]
 
+### Tests
+
+* Ensure the alternative entrypoint is available in the container. [Ben Dalling]
+
 
 ## 0.2.1 (2025-04-09)
 
