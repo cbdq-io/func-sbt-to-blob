@@ -7,3 +7,4 @@
 !host.json
 !requirements.txt
 !constraints.txt
+!multi-topic-entrypoint.py
