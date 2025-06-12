@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Unreleased
+## 0.3.0 (2025-06-12)
 
 ### Features
 
@@ -16,6 +16,8 @@
 * Resolve CVE-2025-4598. [Ben Dalling]
 
 ### Build
+
+* Release/0.3.0. [James Loughlin]
 
 * Migrate to a containerised change log generator. [Ben Dalling]
 
