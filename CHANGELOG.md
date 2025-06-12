@@ -9,6 +9,8 @@
 
 ### Fix
 
+* Allow CVE-2025-4673. [Ben Dalling]
+
 * Allow CVE-2024-45336, CVE-2024-45341, CVE-2025-22866 and CVE-2025-22871. [Ben Dalling]
 
 * Resolve CVE-2025-4598. [Ben Dalling]
