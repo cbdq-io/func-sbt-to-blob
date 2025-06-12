@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Features
+
+* Add alternative entrypoint. [James Loughlin]
+
 ### Fix
 
 * Allow CVE-2024-45336, CVE-2024-45341, CVE-2025-22866 and CVE-2025-22871. [Ben Dalling]
