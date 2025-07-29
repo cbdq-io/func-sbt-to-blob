@@ -7,6 +7,10 @@
 
 * Add the MAX_RUNTIME_SECONDS option. [Ben Dalling]
 
+### Build
+
+* Add to allowed vulnerabilities list. [Ben Dalling]
+
 
 ## 0.3.0 (2025-06-12)
 
