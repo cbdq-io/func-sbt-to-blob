@@ -4,6 +4,7 @@ import datetime
 import logging
 import os
 import sys
+import time
 
 import azure.functions as func
 import azure.storage
@@ -14,6 +15,7 @@ from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
 
 MAX_EMPTY_RECEIVES = int(os.getenv('MAX_EMPTY_RECEIVES', '3'))
 MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
+MAX_RUNTIME_SECONDS = int(os.getenv('MAX_RUNTIME_SECONDS', '0'))
 WAIT_TIME_SECONDS = int(os.getenv('WAIT_TIME_SECONDS', '5'))
 logging.basicConfig()
 logger = logging.getLogger(os.path.basename(__file__))
@@ -223,8 +225,16 @@ def main(timer: func.TimerRequest) -> None:
         path_format
     )
     message_count = 0
+    start_time = time.monotonic()
 
     while not extractor.finished:
+        if MAX_RUNTIME_SECONDS and (time.monotonic() - start_time >= MAX_RUNTIME_SECONDS):
+            logger.warning(
+                f'Max runtime of {MAX_RUNTIME_SECONDS} seconds exceeded for {topic_name}. '
+                f'Breaking early.'
+            )
+            break
+
         messages = extractor.get_messages()
         loader.load(messages)
         extractor.accept_messages(messages)

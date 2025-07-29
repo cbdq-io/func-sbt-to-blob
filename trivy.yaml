@@ -12,6 +12,7 @@ pkg:
     - library
 
 scan:
+  show-suppressed: true
   skip-files: []
 
 severity:

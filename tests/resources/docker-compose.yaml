@@ -1,7 +1,7 @@
 ---
 services:
   azurite:
-    command: azurite-blob --blobHost 0.0.0.0
+    command: azurite-blob --blobHost 0.0.0.0 --skipApiVersionCheck
     container_name: azurite
     healthcheck:
       test: nc -nz 127.0.0.1 10000
