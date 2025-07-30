@@ -15,6 +15,10 @@
 
 * Add to allowed vulnerabilities list. [Ben Dalling]
 
+### Continuous Integration
+
+* Show SUT logs. [Ben Dalling]
+
 
 ## 0.3.0 (2025-06-12)
 
