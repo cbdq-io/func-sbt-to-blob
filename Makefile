@@ -21,11 +21,14 @@ lint:
 	isort -v .
 	flake8
 
+sutlogs:
+	docker compose logs sut
+
 tag:
 	@echo $(TAG)
 
 test:
-	docker compose run emulators
+	docker compose up -d sut --wait
 	PYTHONPATH=. pytest
 
 prereqs:

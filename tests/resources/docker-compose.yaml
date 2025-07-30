@@ -1,7 +1,7 @@
 ---
 services:
   azurite:
-    command: azurite-blob --blobHost 0.0.0.0
+    command: azurite-blob --blobHost 0.0.0.0 --skipApiVersionCheck
     container_name: azurite
     healthcheck:
       test: nc -nz 127.0.0.1 10000
@@ -24,8 +24,6 @@ services:
       azurite:
         condition: service_healthy
       sbemulatorns:
-        condition: service_started
-      sut:
         condition: service_started
     volumes:
       - "./sbus-landing-config.json:/usr/local/etc/Config.json"
@@ -56,7 +54,18 @@ services:
     image: "mcr.microsoft.com/azure-sql-edge:latest"
 
   sut:
-    command: sleep infinity
+    depends_on:
+      emulators:
+        condition: service_completed_successfully
+    entrypoint: /usr/local/bin/multi-topic-entrypoint.py
+    environment:
+      CONTAINER_NAME: mycontainer
+      LOG_LEVEL: DEBUG
+      MAX_RUNTIME_SECONDS: 1
+      SERVICE_BUS_CONNECTION_STRING: "${SERVICE_BUS_CONNECTION_STRING}"
+      STORAGE_ACCOUNT_CONNECTION_STRING: "${STORAGE_ACCOUNT_CONNECTION_STRING}"
+      TOPICS_DIR: topics2
+      TOPICS_AND_SUBSCRIPTIONS: "mytopic:test2"
     container_name: sut
     image: sbt-to-blob:latest
     platform: linux/amd64
