@@ -25,7 +25,7 @@ tag:
 	@echo $(TAG)
 
 test:
-	docker compose run emulators
+	docker compose up -d sut --wait
 	PYTHONPATH=. pytest
 
 prereqs:
