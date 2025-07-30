@@ -13,6 +13,8 @@
 
 ### Build
 
+* Release/0.4.0. [Ben Dalling]
+
 * Add to allowed vulnerabilities list. [Ben Dalling]
 
 ### Continuous Integration
