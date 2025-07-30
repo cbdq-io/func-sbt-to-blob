@@ -21,6 +21,9 @@ lint:
 	isort -v .
 	flake8
 
+sutlogs:
+	docker compose logs sut
+
 tag:
 	@echo $(TAG)
 

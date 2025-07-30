@@ -50,7 +50,7 @@ jobs:
 
       - name: Show logs from SUT
         if: always()
-        run: docker compose logs sut
+        run: make sutlogs
 
       - name: Run Trivy scan
         uses: aquasecurity/trivy-action@0.31.0
