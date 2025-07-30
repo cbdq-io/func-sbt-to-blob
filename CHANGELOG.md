@@ -17,6 +17,8 @@
 
 ### Continuous Integration
 
+* Ensure emulator credentials are available for testing. [Ben Dalling]
+
 * Show SUT logs. [Ben Dalling]
 
 
