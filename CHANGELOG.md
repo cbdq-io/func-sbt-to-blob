@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Unreleased
+## 0.4.0 (2025-07-30)
 
 ### Features
 
@@ -12,6 +12,8 @@
 * Configure PYTHONPATH in the container. [Ben Dalling]
 
 ### Build
+
+* Release/0.4.0. [Ben Dalling]
 
 * Add to allowed vulnerabilities list. [Ben Dalling]
 
