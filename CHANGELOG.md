@@ -7,6 +7,10 @@
 
 * Add the MAX_RUNTIME_SECONDS option. [Ben Dalling]
 
+### Fix
+
+* Configure PYTHONPATH in the container. [Ben Dalling]
+
 ### Build
 
 * Add to allowed vulnerabilities list. [Ben Dalling]
