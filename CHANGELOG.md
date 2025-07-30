@@ -5,6 +5,29 @@
 
 ### Features
 
+* Add the MAX_RUNTIME_SECONDS option. [Ben Dalling]
+
+### Fix
+
+* Configure PYTHONPATH in the container. [Ben Dalling]
+
+### Build
+
+* Release/0.4.0. [Ben Dalling]
+
+* Add to allowed vulnerabilities list. [Ben Dalling]
+
+### Continuous Integration
+
+* Ensure emulator credentials are available for testing. [Ben Dalling]
+
+* Show SUT logs. [Ben Dalling]
+
+
+## 0.3.0 (2025-06-12)
+
+### Features
+
 * Add alternative entrypoint. [James Loughlin]
 
 ### Fix

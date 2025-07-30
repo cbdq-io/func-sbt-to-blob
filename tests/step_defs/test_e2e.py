@@ -123,7 +123,15 @@ def _(STORAGE_ACCOUNT_CONNECTION_STRING: str, SERVICE_BUS_EMULATOR_CONNECTION_ST
 def _(blob_client: azure.storage.blob.BlobServiceClient):
     """the blob count should be 2."""
     container_client = blob_client.get_container_client(container=CONTAINER_NAME)
-    blob_name_list = list(container_client.list_blob_names())
+    blob_name_list = []
+
+    for blob_name in container_client.list_blob_names():
+        if not blob_name.startswith('topics/'):
+            logger.debug(f'Ignoring {blob_name} as part of the tests.')
+            continue
+
+        blob_name_list.append(blob_name)
+
     assert len(blob_name_list) == 2, blob_name_list
     return sorted(blob_name_list)
 

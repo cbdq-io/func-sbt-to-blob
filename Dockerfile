@@ -13,4 +13,5 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && pip install --constraint /home/app/constraints.txt --no-cache-dir --requirement /home/app/requirements.txt
 
+ENV PYTHONPATH="/home/site/wwwroot"
 COPY --chown=app:app . /home/site/wwwroot

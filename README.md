@@ -27,6 +27,10 @@ loaded to will be something like:
 
 ## Optional Environment Variables
 
+- `MAX_RUNTIME_SECONDS`: Limits how long (in seconds) the archiver will spend
+  on a single topic before moving on. Set to 0 (default) to disable this and
+  rely on the usual idle detection logic; set to a positive number to enforce
+  a maximum runtime per topic.
 - `PATH_FORMAT`: The configuration to set the format of the data directories.
   The format set in this configuration converts the timestamp of the latest
   message in the block written to proper directory strings.  Within the
