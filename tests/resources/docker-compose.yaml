@@ -43,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - "./sbus-landing-config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    platform: linux/x86_64
 
   sqledge:
     container_name: "sqledge"
@@ -52,8 +53,10 @@ services:
     healthcheck:
       test: timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/1433'
     image: "mcr.microsoft.com/azure-sql-edge:latest"
+    platform: linux/x86_64
 
   sut:
+    build: ../..
     depends_on:
       emulators:
         condition: service_completed_successfully
@@ -68,4 +71,4 @@ services:
       TOPICS_AND_SUBSCRIPTIONS: "mytopic:test2"
     container_name: sut
     image: sbt-to-blob:latest
-    platform: linux/amd64
+    platform: linux/x86_64

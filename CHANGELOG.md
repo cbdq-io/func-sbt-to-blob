@@ -1,6 +1,15 @@
 # Changelog
 
 
+## Unreleased
+
+### Build
+
+* Update allowed vulnerabilities. [Ben Dalling]
+
+* Microsoft seem to have dropped support for arm64 images. [Ben Dalling]
+
+
 ## 0.4.0 (2025-07-30)
 
 ### Features

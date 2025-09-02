@@ -6,7 +6,6 @@ TAG = 0.4.0
 all: lint clean build test
 
 build:
-	docker build -t sbt-to-blob:latest .
 	docker compose build
 
 clean:
