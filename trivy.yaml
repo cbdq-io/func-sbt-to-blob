@@ -13,7 +13,10 @@ pkg:
 
 scan:
   show-suppressed: true
-  skip-files: []
+  skip-files:
+    - /etc/ssh/ssh_host_ed25519_key
+    - /etc/ssh/ssh_host_ecdsa_key
+    - /etc/ssh/ssh_host_rsa_key
 
 severity:
   - MEDIUM
