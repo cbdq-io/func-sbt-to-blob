@@ -1,3 +1,5 @@
+FROM ghcr.io/cbdq-io/sbus-router:0.10.0 as router
+
 FROM mcr.microsoft.com/azure-functions/python:4-python3.12-appservice
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
@@ -6,6 +8,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 COPY --chown=app:app --chmod=644 constraints.txt /home/app/constraints.txt
 COPY --chown=app:app --chmod=644 requirements.txt /home/app/requirements.txt
 COPY --chown=app:app --chmod=755 multi-topic-entrypoint.py /usr/local/bin/multi-topic-entrypoint.py
+COPY --chown=app:app --chmod=755 --from=router /home/appuser/nukedlq.py /usr/local/bin/nukedlq.py
 
 RUN apt-get update \
   && apt-get upgrade --yes libsystemd0 libudev1 \
