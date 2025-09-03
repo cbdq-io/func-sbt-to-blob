@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+### Features
+
+* Copy the nukedlq.py script from the sbus-router container. [Ben Dalling]
+
 ### Build
 
 * Update allowed vulnerabilities. [Ben Dalling]
