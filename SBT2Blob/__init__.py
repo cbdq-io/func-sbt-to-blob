@@ -73,9 +73,12 @@ class LoadURI:
 class Extractor:
     """Extract data from Service Bus."""
 
-    def __init__(self, connection_string: str, topic_name: str, subscription_name: str):
+    def __init__(self, connection_string: str, topic_name: str, subscription_name: str,
+                 check_for_dead_letter_messages: bool):
         self.finished = False
         self.client = ServiceBusClient.from_connection_string(connection_string)
+        self.topic_name = topic_name
+        self.subscription_name = subscription_name
         self.receiver = self.client.get_subscription_receiver(
             topic_name,
             subscription_name,
@@ -83,6 +86,7 @@ class Extractor:
         )
         self.renewer = AutoLockRenewer()
         self.empty_receive_count = 0
+        self.check_for_dead_letter_messages = check_for_dead_letter_messages
 
     def accept_messages(self, messages: list[ServiceBusMessage]) -> None:
         """Accept the messages in the current buffer."""
@@ -95,6 +99,27 @@ class Extractor:
         self.receiver.close()
         self.client.close()
 
+    def dlq_has_messages(self) -> bool:
+        """
+        Check if there are dead-letter messages on the subscription.
+
+        Returns
+        -------
+        bool
+            True if there are dead-letter messages present.
+        """
+        if not self.check_for_dead_letter_messages:
+            logger.debug('Dead-letter checking is disabled.')
+            return False
+
+        msgs = self.receiver.peek_messages(max_message_count=1)
+        response = len(msgs) > 0
+
+        if response:
+            logger.warning(f'There are dead-letter messages on {self.topic_name}/{self.subscription_name}')
+
+        return response
+
     def get_messages(self) -> list[ServiceBusMessage]:
         """
         Get messages from the topic/subscription.
@@ -104,6 +129,7 @@ class Extractor:
         list
             A list of messages.
         """
+        self.dlq_has_messages()
         messages = self.receiver.receive_messages(
             max_message_count=MAX_MESSAGES_IN_BATCH,
             max_wait_time=WAIT_TIME_SECONDS
@@ -216,7 +242,8 @@ def main(timer: func.TimerRequest) -> None:
     subscription_name = get_environment_variable('SUBSCRIPTION_NAME', required=True)
     topics_dir = get_environment_variable('TOPICS_DIR', default='topics')
     topic_name = get_environment_variable('TOPIC_NAME', required=True)
-    extractor = Extractor(sbns_connection_string, topic_name, subscription_name)
+    check_for_dead_letter_messages = get_environment_variable('CHECK_FOR_DL_MESSAGES', default='0') == '1'
+    extractor = Extractor(sbns_connection_string, topic_name, subscription_name, check_for_dead_letter_messages)
     loader = Loader(
         sa_connection_string,
         container_name,

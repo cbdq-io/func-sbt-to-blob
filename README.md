@@ -27,6 +27,9 @@ loaded to will be something like:
 
 ## Optional Environment Variables
 
+- `CHECK_FOR_DL_MESSAGES`: Check for the existence of and warn if any dead-
+  letter messages are present on the topic/subscription.  Set to "1" to
+  enable.  Default is "0".
 - `MAX_RUNTIME_SECONDS`: Limits how long (in seconds) the archiver will spend
   on a single topic before moving on. Set to 0 (default) to disable this and
   rely on the usual idle detection logic; set to a positive number to enforce

@@ -62,9 +62,10 @@ services:
         condition: service_completed_successfully
     entrypoint: /usr/local/bin/multi-topic-entrypoint.py
     environment:
+      CHECK_FOR_DL_MESSAGES: 1
       CONTAINER_NAME: mycontainer
       LOG_LEVEL: DEBUG
-      MAX_RUNTIME_SECONDS: 1
+      MAX_RUNTIME_SECONDS: 15
       SERVICE_BUS_CONNECTION_STRING: "${SERVICE_BUS_CONNECTION_STRING}"
       STORAGE_ACCOUNT_CONNECTION_STRING: "${STORAGE_ACCOUNT_CONNECTION_STRING}"
       TOPICS_DIR: topics2
