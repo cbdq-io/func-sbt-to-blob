@@ -81,6 +81,26 @@ def _(blob_client: BlobServiceClient):
         raise Exception(e)
 
 
+@then('create a dead-letter message')
+def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
+    """create a dead-letter message."""
+    topic = 'mytopic'
+    subscription = 'test2'
+
+    with ServiceBusClient.from_connection_string(SERVICE_BUS_EMULATOR_CONNECTION_STRING) as client:
+        sender = client.get_topic_sender(topic)
+        message = ServiceBusMessage('Hello, DLQ!'.encode())
+        sender.send_messages(message)
+
+        with client.get_subscription_receiver(topic, subscription, max_wait_time=5) as receiver:
+            msgs = receiver.receive_messages(max_message_count=1)
+
+            for msg in msgs:
+                logger.debug(f'Received: {msg.body}')
+                receiver.dead_letter_message(msg, reason='Testing DLQ', error_description='Forced')
+                logger.debug('Moved to DLQ')
+
+
 @then('produce the messages to the topic')
 def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
     """produce the messages to the topic."""

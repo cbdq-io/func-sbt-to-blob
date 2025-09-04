@@ -5,6 +5,8 @@
 
 ### Features
 
+* Optionally check for the existence of dead-letter messages. [Ben Dalling]
+
 * Copy the nukedlq.py script from the sbus-router container. [Ben Dalling]
 
 ### Build
