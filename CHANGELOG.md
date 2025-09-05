@@ -5,6 +5,25 @@
 
 ### Features
 
+* Add Prometheus endpoint to the multi-topic entrypoint. [Ben Dalling]
+
+* Optionally check for the existence of dead-letter messages. [Ben Dalling]
+
+* Copy the nukedlq.py script from the sbus-router container. [Ben Dalling]
+
+### Build
+
+* Release/0.5.0. [Ben Dalling]
+
+* Update allowed vulnerabilities. [Ben Dalling]
+
+* Microsoft seem to have dropped support for arm64 images. [Ben Dalling]
+
+
+## 0.4.0 (2025-07-30)
+
+### Features
+
 * Add the MAX_RUNTIME_SECONDS option. [Ben Dalling]
 
 ### Fix

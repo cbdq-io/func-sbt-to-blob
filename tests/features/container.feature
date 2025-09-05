@@ -13,6 +13,7 @@ Feature: Test the Container
             | /home/site/wwwroot/SBT2Blob/__init__.py   |
             | /home/site/wwwroot/SBT2Blob/function.json |
             | /usr/local/bin/multi-topic-entrypoint.py  |
+            | /usr/local/bin/nukedlq.py                 |
 
     Scenario Outline: Absent Files
         Given the TestInfra host with URL "docker://sut" is ready
@@ -31,6 +32,7 @@ Feature: Test the Container
         Then the TestInfra pip package is present
 
         Examples:
-            | pip_package      |
-            | azure-servicebus |
-            | smart_open       |
+            | pip_package       |
+            | azure-servicebus  |
+            | prometheus-client |
+            | smart_open        |

@@ -43,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - "./sbus-landing-config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    platform: linux/x86_64
 
   sqledge:
     container_name: "sqledge"
@@ -52,20 +53,26 @@ services:
     healthcheck:
       test: timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/1433'
     image: "mcr.microsoft.com/azure-sql-edge:latest"
+    platform: linux/x86_64
 
   sut:
+    build: ../..
     depends_on:
       emulators:
         condition: service_completed_successfully
     entrypoint: /usr/local/bin/multi-topic-entrypoint.py
     environment:
+      CHECK_FOR_DL_MESSAGES: 1
       CONTAINER_NAME: mycontainer
       LOG_LEVEL: DEBUG
-      MAX_RUNTIME_SECONDS: 1
+      MAX_RUNTIME_SECONDS: 15
+      PROMETHEUS_METRIC_NAME_PREFIX: widget_
       SERVICE_BUS_CONNECTION_STRING: "${SERVICE_BUS_CONNECTION_STRING}"
       STORAGE_ACCOUNT_CONNECTION_STRING: "${STORAGE_ACCOUNT_CONNECTION_STRING}"
       TOPICS_DIR: topics2
       TOPICS_AND_SUBSCRIPTIONS: "mytopic:test2"
     container_name: sut
     image: sbt-to-blob:latest
-    platform: linux/amd64
+    platform: linux/x86_64
+    ports:
+      - "8000:8000"
