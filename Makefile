@@ -1,7 +1,7 @@
 .EXPORT_ALL_VARIABLES:
 
 COMPOSE_FILE = tests/resources/docker-compose.yaml
-TAG = 0.5.0
+TAG = 0.5.1
 
 all: lint clean build test
 
@@ -27,6 +27,8 @@ tag:
 	@echo $(TAG)
 
 test:
+	docker compose up -d emulators --wait
+	python ./tests/resources/create_dl_message.py
 	docker compose up -d sut --wait
 	PYTHONPATH=. pytest
 

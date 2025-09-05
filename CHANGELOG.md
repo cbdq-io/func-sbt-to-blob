@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+### Fix
+
+* Correct dead-letter identification. [Ben Dalling]
+
+
+## 0.5.0 (2025-09-05)
+
 ### Features
 
 * Add Prometheus endpoint to the multi-topic entrypoint. [Ben Dalling]

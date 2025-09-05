@@ -11,7 +11,7 @@ import azure.storage
 import azure.storage.blob
 import smart_open
 from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
-                              ServiceBusMessage)
+                              ServiceBusMessage, ServiceBusSubQueue)
 
 MAX_EMPTY_RECEIVES = int(os.getenv('MAX_EMPTY_RECEIVES', '3'))
 MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
@@ -130,7 +130,14 @@ class Extractor:
             logger.debug('Dead-letter checking is disabled.')
             return False
 
-        msgs = self.receiver.peek_messages(max_message_count=1)
+        logger.debug(f'Checking for dead-letter messages on {self.topic_name}/{self.subscription_name}')
+        with self.client.get_subscription_receiver(
+            topic_name=self.topic_name,
+            subscription_name=self.subscription_name,
+            sub_queue=ServiceBusSubQueue.DEAD_LETTER
+        ) as dlq_receiver:
+            msgs = dlq_receiver.peek_messages(max_message_count=1)
+
         response = len(msgs) > 0
 
         if response:
