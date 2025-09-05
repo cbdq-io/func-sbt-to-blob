@@ -13,6 +13,8 @@
 
 ### Build
 
+* Release/0.5.0. [Ben Dalling]
+
 * Update allowed vulnerabilities. [Ben Dalling]
 
 * Microsoft seem to have dropped support for arm64 images. [Ben Dalling]
