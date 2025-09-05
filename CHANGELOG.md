@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Unreleased
+## 0.5.0 (2025-09-05)
 
 ### Features
 
@@ -12,6 +12,8 @@
 * Copy the nukedlq.py script from the sbus-router container. [Ben Dalling]
 
 ### Build
+
+* Release/0.5.0. [Ben Dalling]
 
 * Update allowed vulnerabilities. [Ben Dalling]
 
