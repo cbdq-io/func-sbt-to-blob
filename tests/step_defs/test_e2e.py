@@ -96,9 +96,9 @@ def _(SERVICE_BUS_EMULATOR_CONNECTION_STRING: str):
             msgs = receiver.receive_messages(max_message_count=1)
 
             for msg in msgs:
-                logger.debug(f'Received: {msg.body}')
+                print(f'Received: {msg.body}')
                 receiver.dead_letter_message(msg, reason='Testing DLQ', error_description='Forced')
-                logger.debug('Moved to DLQ')
+                print('Moved to DLQ')
 
 
 @then('produce the messages to the topic')
