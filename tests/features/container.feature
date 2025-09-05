@@ -32,6 +32,7 @@ Feature: Test the Container
         Then the TestInfra pip package is present
 
         Examples:
-            | pip_package      |
-            | azure-servicebus |
-            | smart_open       |
+            | pip_package       |
+            | azure-servicebus  |
+            | prometheus-client |
+            | smart_open        |

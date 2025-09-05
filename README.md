@@ -45,6 +45,11 @@ loaded to will be something like:
     - `mm` will be replaced by the zero padded minute number.
 
   Default is "".
+= `PROMETHEUS_METRIC_NAME_PREFIX`: The prefix for any of the custom
+  Prometheus metrics that are created.  The default is "".
+- `PROMETHEUS_PORT`: Set the port for Prometheus metrics to be made
+  available on when running `multi-topic-entrypoint.py`.  Default
+  is "8000".
 - `TOPICS_DIR`: The directory within the specified container to load the
   topics to.  Default is `topics`.
 
