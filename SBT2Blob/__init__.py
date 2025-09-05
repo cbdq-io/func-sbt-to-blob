@@ -19,6 +19,24 @@ MAX_RUNTIME_SECONDS = int(os.getenv('MAX_RUNTIME_SECONDS', '0'))
 WAIT_TIME_SECONDS = int(os.getenv('WAIT_TIME_SECONDS', '5'))
 logging.basicConfig()
 logger = logging.getLogger(os.path.basename(__file__))
+_message_count = 0
+
+
+class MockTimer:
+    """
+    A mock azure.functions.TimerRequest.
+
+    Used by the main_wrapper function to call main when not part
+    of the Azure Function App tooling.
+
+    Attributes
+    ----------
+    past_due : bool
+        Always set to False.
+    """
+
+    def __init__(self):
+        self.past_due = False
 
 
 class LoadURI:
@@ -228,6 +246,7 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
 
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
+    global _message_count
     log_level = os.getenv('LOG_LEVEL', 'WARN')
     logger.setLevel(log_level)
     logger.debug(f'Log level is {logging.getLevelName(logger.getEffectiveLevel())}.')
@@ -251,7 +270,7 @@ def main(timer: func.TimerRequest) -> None:
         topic_name,
         path_format
     )
-    message_count = 0
+    _message_count = 0
     start_time = time.monotonic()
 
     while not extractor.finished:
@@ -265,7 +284,26 @@ def main(timer: func.TimerRequest) -> None:
         messages = extractor.get_messages()
         loader.load(messages)
         extractor.accept_messages(messages)
-        message_count += len(messages)
+        _message_count += len(messages)
 
     extractor.close()
-    logger.info(f'A total of {message_count:,} messages were loaded to blob storage for {topic_name}.')
+    logger.info(f'A total of {_message_count:,} messages were loaded to blob storage for {topic_name}.')
+
+
+def main_wrapper() -> int:
+    """
+    Call main from outside of the Azure Function App tooling.
+
+    Used by the ulti-topic-entrypoint.py script.
+
+    Returns
+    -------
+    int
+        The number of records written to file.
+    """
+    global _message_count
+
+    timer = MockTimer()
+    _message_count = 0
+    main(timer)
+    return _message_count

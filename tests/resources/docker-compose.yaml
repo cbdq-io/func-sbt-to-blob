@@ -66,6 +66,7 @@ services:
       CONTAINER_NAME: mycontainer
       LOG_LEVEL: DEBUG
       MAX_RUNTIME_SECONDS: 15
+      PROMETHEUS_METRIC_NAME_PREFIX: widget_
       SERVICE_BUS_CONNECTION_STRING: "${SERVICE_BUS_CONNECTION_STRING}"
       STORAGE_ACCOUNT_CONNECTION_STRING: "${STORAGE_ACCOUNT_CONNECTION_STRING}"
       TOPICS_DIR: topics2
@@ -73,3 +74,5 @@ services:
     container_name: sut
     image: sbt-to-blob:latest
     platform: linux/x86_64
+    ports:
+      - "8000:8000"

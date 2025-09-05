@@ -5,6 +5,8 @@
 
 ### Features
 
+* Add Prometheus endpoint to the multi-topic entrypoint. [Ben Dalling]
+
 * Optionally check for the existence of dead-letter messages. [Ben Dalling]
 
 * Copy the nukedlq.py script from the sbus-router container. [Ben Dalling]
