@@ -1,6 +1,13 @@
 # Changelog
 
 
+## 0.5.1 (2025-09-05)
+
+### Fix
+
+* Correct dead-letter identification. [Ben Dalling]
+
+
 ## 0.5.0 (2025-09-05)
 
 ### Features

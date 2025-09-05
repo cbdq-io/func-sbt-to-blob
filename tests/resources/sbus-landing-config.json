@@ -28,10 +28,10 @@
                             {
                                 "Name": "test2",
                                 "Properties": {
-                                    "DeadLetteringOnMessageExpiration": false,
+                                    "DeadLetteringOnMessageExpiration": true,
                                     "DefaultMessageTimeToLive": "PT1H",
                                     "LockDuration": "PT1M",
-                                    "MaxDeliveryCount": 10,
+                                    "MaxDeliveryCount": 1,
                                     "ForwardDeadLetteredMessagesTo": "",
                                     "ForwardTo": "",
                                     "RequiresSession": false
