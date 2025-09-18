@@ -12,6 +12,7 @@ import azure.storage.blob
 import smart_open
 from azure.servicebus import (AutoLockRenewer, ServiceBusClient,
                               ServiceBusMessage, ServiceBusSubQueue)
+from azure.servicebus.exceptions import ServiceBusError
 
 MAX_EMPTY_RECEIVES = int(os.getenv('MAX_EMPTY_RECEIVES', '3'))
 MAX_MESSAGES_IN_BATCH = int(os.getenv('MAX_MESSAGES_IN_BATCH', '500'))
@@ -113,9 +114,12 @@ class Extractor:
 
     def close(self) -> None:
         """Close the receiver and the connection."""
-        self.renewer.close()
-        self.receiver.close()
-        self.client.close()
+        try:
+            self.renewer.close()
+            self.receiver.close()
+            self.client.close()
+        except ServiceBusClient as ex:
+            logger.warning(f'An error occurred while closing the extractor: {ex}')
 
     def dlq_has_messages(self) -> bool:
         """
@@ -251,6 +255,28 @@ def get_environment_variable(key_name: str, default=None, required=False) -> str
     return value
 
 
+def is_max_runtime_exceeded(start_time: float) -> bool:
+    """
+    Check if the runtime is set and if so, has it been exceeded.
+
+    Parameters
+    ----------
+    start_time : float
+        The time that the process started at.
+
+    Returns
+    -------
+    bool
+        False if MAX_RUNTIME_SECONDS is set to zero or the process is still
+        within the max allowed time.  True if the time has been exceeded.
+    """
+    if MAX_RUNTIME_SECONDS == 0:
+        return False
+
+    process_time = time.monotonic() - start_time
+    return process_time >= MAX_RUNTIME_SECONDS
+
+
 def main(timer: func.TimerRequest) -> None:
     """Control the main processing."""
     global _message_count
@@ -281,17 +307,20 @@ def main(timer: func.TimerRequest) -> None:
     start_time = time.monotonic()
 
     while not extractor.finished:
-        if MAX_RUNTIME_SECONDS and (time.monotonic() - start_time >= MAX_RUNTIME_SECONDS):
-            logger.warning(
-                f'Max runtime of {MAX_RUNTIME_SECONDS} seconds exceeded for {topic_name}. '
-                f'Breaking early.'
-            )
-            break
+        try:
+            if is_max_runtime_exceeded(start_time):
+                logger.warning(
+                    f'Max runtime of {MAX_RUNTIME_SECONDS} seconds exceeded for {topic_name}. '
+                    f'Breaking early.'
+                )
+                break
 
-        messages = extractor.get_messages()
-        loader.load(messages)
-        extractor.accept_messages(messages)
-        _message_count += len(messages)
+            messages = extractor.get_messages()
+            loader.load(messages)
+            extractor.accept_messages(messages)
+            _message_count += len(messages)
+        except ServiceBusError as ex:
+            logger.warning(ex)
 
     extractor.close()
     logger.info(f'A total of {_message_count:,} messages were loaded to blob storage for {topic_name}.')
