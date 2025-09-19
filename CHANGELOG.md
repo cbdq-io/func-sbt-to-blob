@@ -7,6 +7,10 @@
 
 * More robust handling of transient broker errors. [Ben Dalling]
 
+### Build
+
+* Release/0.5.2. [Ben Dalling]
+
 
 ## 0.5.1 (2025-09-05)
 
