@@ -5,6 +5,19 @@
 
 ### Fix
 
+* Add CVE-2025-47906 to the allowed vulnerability list. [Ben Dalling]
+
+* More robust handling of transient broker errors. [Ben Dalling]
+
+### Build
+
+* Release/0.5.2. [Ben Dalling]
+
+
+## 0.5.1 (2025-09-05)
+
+### Fix
+
 * Correct dead-letter identification. [Ben Dalling]
 
 
