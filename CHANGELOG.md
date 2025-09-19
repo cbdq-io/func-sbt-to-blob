@@ -1,6 +1,13 @@
 # Changelog
 
 
+## Unreleased
+
+### Fix
+
+* More robust handling of transient broker errors. [Ben Dalling]
+
+
 ## 0.5.1 (2025-09-05)
 
 ### Fix
