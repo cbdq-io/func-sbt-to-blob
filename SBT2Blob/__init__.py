@@ -320,7 +320,7 @@ def main(timer: func.TimerRequest) -> None:
             extractor.accept_messages(messages)
             _message_count += len(messages)
         except ServiceBusError as ex:
-            logger.warning(ex)
+            logger.warning(f'{topic_name} - {ex}')
 
     extractor.close()
     logger.info(f'A total of {_message_count:,} messages were loaded to blob storage for {topic_name}.')
