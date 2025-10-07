@@ -9,6 +9,10 @@
 
 * When a ServiceBusError exception is caught, show the topic name. [Ben Dalling]
 
+### Continuous Integration
+
+* Add dependapot updates for GitHub actions. [Ben Dalling]
+
 
 ## 0.5.2 (2025-09-19)
 
