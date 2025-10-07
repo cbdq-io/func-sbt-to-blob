@@ -11,7 +11,6 @@
 
 ### Build
 
-<<<<<<< HEAD
 * Bump peter-evans/create-issue-from-file from 5 to 6. [dependabot[bot]]
 
   Bumps [peter-evans/create-issue-from-file](https://github.com/peter-evans/create-issue-from-file) from 5 to 6.
@@ -22,7 +21,7 @@
   updated-dependencies:
   - dependency-name: peter-evans/create-issue-from-file
     dependency-version: '6'
-=======
+
 * Bump actions/checkout from 4 to 5. [dependabot[bot]]
 
   Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 5.
@@ -34,7 +33,18 @@
   updated-dependencies:
   - dependency-name: actions/checkout
     dependency-version: '5'
->>>>>>> dependabot/github_actions/actions/checkout-5
+
+* Bump actions/setup-python from 5 to 6. [dependabot[bot]]
+
+  Bumps [actions/setup-python](https://github.com/actions/setup-python) from 5 to 6.
+  - [Release notes](https://github.com/actions/setup-python/releases)
+  - [Commits](https://github.com/actions/setup-python/compare/v5...v6)
+
+  ---
+  updated-dependencies:
+  - dependency-name: actions/setup-python
+    dependency-version: '6'
+
     dependency-type: direct:production
     update-type: version-update:semver-major
   ...
@@ -174,5 +184,3 @@
 ### Continuous Integration
 
 * Add GitHub workflows for CI/CD. [Ben Dalling]
-
-
