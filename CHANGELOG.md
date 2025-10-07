@@ -9,6 +9,23 @@
 
 * When a ServiceBusError exception is caught, show the topic name. [Ben Dalling]
 
+### Build
+
+* Bump actions/checkout from 4 to 5. [dependabot[bot]]
+
+  Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 5.
+  - [Release notes](https://github.com/actions/checkout/releases)
+  - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+  - [Commits](https://github.com/actions/checkout/compare/v4...v5)
+
+  ---
+  updated-dependencies:
+  - dependency-name: actions/checkout
+    dependency-version: '5'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
+  ...
+
 ### Continuous Integration
 
 * Add dependapot updates for GitHub actions. [Ben Dalling]
