@@ -113,13 +113,21 @@ class Extractor:
             self.receiver.complete_message(message)
 
     def close(self) -> None:
-        """Close the receiver and the connection."""
+        """Close the Service Bus Resources."""
         try:
             self.renewer.close()
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the renewer: {ex}')
+
+        try:
             self.receiver.close()
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the receiver: {ex}')
+
+        try:
             self.client.close()
-        except ServiceBusClient as ex:
-            logger.warning(f'An error occurred while closing the extractor: {ex}')
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the client: {ex}')
 
     def dlq_has_messages(self) -> bool:
         """
