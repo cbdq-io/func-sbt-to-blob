@@ -9,6 +9,22 @@
 
 * When a ServiceBusError exception is caught, show the topic name. [Ben Dalling]
 
+### Build
+
+* Bump aquasecurity/trivy-action from 0.31.0 to 0.33.1. [dependabot[bot]]
+
+  Bumps [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) from 0.31.0 to 0.33.1.
+  - [Release notes](https://github.com/aquasecurity/trivy-action/releases)
+  - [Commits](https://github.com/aquasecurity/trivy-action/compare/0.31.0...0.33.1)
+
+  ---
+  updated-dependencies:
+  - dependency-name: aquasecurity/trivy-action
+    dependency-version: 0.33.1
+    dependency-type: direct:production
+    update-type: version-update:semver-minor
+  ...
+
 ### Continuous Integration
 
 * Add dependapot updates for GitHub actions. [Ben Dalling]
