@@ -113,13 +113,21 @@ class Extractor:
             self.receiver.complete_message(message)
 
     def close(self) -> None:
-        """Close the receiver and the connection."""
+        """Close the Service Bus Resources."""
         try:
             self.renewer.close()
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the renewer: {ex}')
+
+        try:
             self.receiver.close()
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the receiver: {ex}')
+
+        try:
             self.client.close()
-        except ServiceBusClient as ex:
-            logger.warning(f'An error occurred while closing the extractor: {ex}')
+        except (AttributeError, ServiceBusClient) as ex:
+            logger.warning(f'An error occurred while closing the client: {ex}')
 
     def dlq_has_messages(self) -> bool:
         """
@@ -320,7 +328,7 @@ def main(timer: func.TimerRequest) -> None:
             extractor.accept_messages(messages)
             _message_count += len(messages)
         except ServiceBusError as ex:
-            logger.warning(ex)
+            logger.warning(f'{topic_name} - {ex}')
 
     extractor.close()
     logger.info(f'A total of {_message_count:,} messages were loaded to blob storage for {topic_name}.')
