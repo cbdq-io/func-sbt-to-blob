@@ -11,42 +11,6 @@
 
 ### Build
 
-* Bump peter-evans/create-issue-from-file from 5 to 6. [dependabot[bot]]
-
-  Bumps [peter-evans/create-issue-from-file](https://github.com/peter-evans/create-issue-from-file) from 5 to 6.
-  - [Release notes](https://github.com/peter-evans/create-issue-from-file/releases)
-  - [Commits](https://github.com/peter-evans/create-issue-from-file/compare/v5...v6)
-
-  ---
-  updated-dependencies:
-  - dependency-name: peter-evans/create-issue-from-file
-    dependency-version: '6'
-
-* Bump actions/checkout from 4 to 5. [dependabot[bot]]
-
-  Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 5.
-  - [Release notes](https://github.com/actions/checkout/releases)
-  - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
-  - [Commits](https://github.com/actions/checkout/compare/v4...v5)
-
-  ---
-  updated-dependencies:
-  - dependency-name: actions/checkout
-    dependency-version: '5'
-
-* Bump actions/setup-python from 5 to 6. [dependabot[bot]]
-
-  Bumps [actions/setup-python](https://github.com/actions/setup-python) from 5 to 6.
-  - [Release notes](https://github.com/actions/setup-python/releases)
-  - [Commits](https://github.com/actions/setup-python/compare/v5...v6)
-
-  ---
-  updated-dependencies:
-  - dependency-name: actions/setup-python
-    dependency-version: '6'
-
-    dependency-type: direct:production
-    update-type: version-update:semver-major
 * Bump aquasecurity/trivy-action from 0.31.0 to 0.33.1. [dependabot[bot]]
 
   Bumps [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) from 0.31.0 to 0.33.1.
@@ -59,6 +23,49 @@
     dependency-version: 0.33.1
     dependency-type: direct:production
     update-type: version-update:semver-minor
+  ...
+
+* Bump actions/setup-python from 5 to 6. [dependabot[bot]]
+
+  Bumps [actions/setup-python](https://github.com/actions/setup-python) from 5 to 6.
+  - [Release notes](https://github.com/actions/setup-python/releases)
+  - [Commits](https://github.com/actions/setup-python/compare/v5...v6)
+
+  ---
+  updated-dependencies:
+  - dependency-name: actions/setup-python
+    dependency-version: '6'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
+  ...
+
+* Bump actions/checkout from 4 to 5. [dependabot[bot]]
+
+  Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 5.
+  - [Release notes](https://github.com/actions/checkout/releases)
+  - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+  - [Commits](https://github.com/actions/checkout/compare/v4...v5)
+
+  ---
+  updated-dependencies:
+  - dependency-name: actions/checkout
+    dependency-version: '5'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
+  ...
+
+* Bump peter-evans/create-issue-from-file from 5 to 6. [dependabot[bot]]
+
+  Bumps [peter-evans/create-issue-from-file](https://github.com/peter-evans/create-issue-from-file) from 5 to 6.
+  - [Release notes](https://github.com/peter-evans/create-issue-from-file/releases)
+  - [Commits](https://github.com/peter-evans/create-issue-from-file/compare/v5...v6)
+
+  ---
+  updated-dependencies:
+  - dependency-name: peter-evans/create-issue-from-file
+    dependency-version: '6'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
   ...
 
 ### Continuous Integration
@@ -196,3 +203,5 @@
 ### Continuous Integration
 
 * Add GitHub workflows for CI/CD. [Ben Dalling]
+
+
