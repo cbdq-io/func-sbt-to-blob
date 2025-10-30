@@ -5,6 +5,13 @@
 
 ### Fix
 
+* CVE-2025-55315. [Jim Loughlin]
+
+
+## 0.5.3 (2025-10-07)
+
+### Fix
+
 * Handle AttributeError when closing the extractor. [Ben Dalling]
 
 * When a ServiceBusError exception is caught, show the topic name. [Ben Dalling]
