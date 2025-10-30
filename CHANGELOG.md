@@ -7,6 +7,10 @@
 
 * CVE-2025-55315. [Jim Loughlin]
 
+### Build
+
+* Add CVE-2025-8869 to allowed vulnerabilities. [Jim Loughlin]
+
 
 ## 0.5.3 (2025-10-07)
 
