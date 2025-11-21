@@ -1,18 +1,7 @@
 # Changelog
 
 
-## 0.5.4 (2025-10-30)
-
-### Fix
-
-* CVE-2025-55315. [Jim Loughlin]
-
-### Build
-
-* Add CVE-2025-8869 to allowed vulnerabilities. [Jim Loughlin]
-
-
-## 0.5.3 (2025-10-07)
+## Unreleased
 
 ### Build
 
@@ -30,6 +19,21 @@
     dependency-type: direct:production
     update-type: version-update:semver-major
   ...
+
+### Documentation
+
+* Add contributing guide. [Ben Dalling]
+
+
+## 0.5.4 (2025-10-30)
+
+### Fix
+
+* CVE-2025-55315. [Jim Loughlin]
+
+### Build
+
+* Add CVE-2025-8869 to allowed vulnerabilities. [Jim Loughlin]
 
 
 ## 0.5.3 (2025-10-07)
