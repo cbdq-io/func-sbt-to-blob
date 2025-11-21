@@ -3,6 +3,30 @@
 
 ## Unreleased
 
+### Build
+
+* Bump github/codeql-action from 3 to 4. [dependabot[bot]]
+
+  Bumps [github/codeql-action](https://github.com/github/codeql-action) from 3 to 4.
+  - [Release notes](https://github.com/github/codeql-action/releases)
+  - [Changelog](https://github.com/github/codeql-action/blob/main/CHANGELOG.md)
+  - [Commits](https://github.com/github/codeql-action/compare/v3...v4)
+
+  ---
+  updated-dependencies:
+  - dependency-name: github/codeql-action
+    dependency-version: '4'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
+  ...
+
+### Documentation
+
+* Add contributing guide. [Ben Dalling]
+
+
+## 0.5.4 (2025-10-30)
+
 ### Fix
 
 * CVE-2025-55315. [Jim Loughlin]
