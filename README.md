@@ -1,6 +1,7 @@
 # func-sbt-to-blob
-A containerised Azure Function App to Sink data from a Service Bus Topic to
-Blob Storage.
+A
+[containerised Azure Function App](https://mcr.microsoft.com/en-us/artifact/mar/azure-functions/python/tags)
+to Sink data from a Service Bus Topic to Blob Storage.
 
 If `CONTAINER_NAME` is set to `mycontainer`, `TOPICS_DIR` is set to `topics`,
 `PATH_FORMAT` is set to `year=YYYY/month=MM/day=dd/hour=HH` and
