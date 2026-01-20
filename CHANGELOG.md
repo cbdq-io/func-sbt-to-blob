@@ -5,6 +5,8 @@
 
 ### Build
 
+* Update the base image from Python 3.12 to 3.14. [Ben Dalling]
+
 * Bump actions/checkout from 5 to 6. [dependabot[bot]]
 
   Bumps [actions/checkout](https://github.com/actions/checkout) from 5 to 6.
