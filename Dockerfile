@@ -1,6 +1,6 @@
 FROM ghcr.io/cbdq-io/sbus-router:0.10.0 as router
 
-FROM mcr.microsoft.com/azure-functions/python:4-python3.12-appservice
+FROM mcr.microsoft.com/azure-functions/python:4-python3.14-appservice
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
