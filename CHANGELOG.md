@@ -18,6 +18,8 @@
     dependency-type: direct:production
     update-type: version-update:semver-major
 * Bump aquasecurity/trivy-action in /.github/workflows. [dependabot[bot]]
+* Bump aquasecurity/trivy-action from 0.33.1 to 0.34.0. [dependabot[bot]]
+>>>>>>> dependabot/github_actions/aquasecurity/trivy-action-0.34.0
 
   Bumps [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) from 0.33.1 to 0.34.0.
   - [Release notes](https://github.com/aquasecurity/trivy-action/releases)
