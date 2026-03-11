@@ -1,6 +1,60 @@
 # Changelog
 
 
+## 0.5.7 (2026-03-11)
+
+### Fix
+
+* CVE-2025-8869, CVE-2025-61727, CVE-2025-61729 and CVE-2025-68973 are no longer present in the image. [Ben Dalling]
+
+### Build
+
+* Bump aquasecurity/trivy-action from 0.33.1 to 0.34.0. [dependabot[bot]]
+
+  Bumps [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) from 0.33.1 to 0.34.0.
+  - [Release notes](https://github.com/aquasecurity/trivy-action/releases)
+  - [Commits](https://github.com/aquasecurity/trivy-action/compare/0.33.1...0.34.0)
+
+  ---
+  updated-dependencies:
+  - dependency-name: aquasecurity/trivy-action
+    dependency-version: 0.34.0
+    dependency-type: direct:production
+    update-type: version-update:semver-minor
+  ...
+
+* Bump aquasecurity/trivy-action in /.github/workflows. [dependabot[bot]]
+
+  Bumps [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action) from 0.33.1 to 0.34.0.
+  - [Release notes](https://github.com/aquasecurity/trivy-action/releases)
+  - [Commits](https://github.com/aquasecurity/trivy-action/compare/0.33.1...0.34.0)
+
+  ---
+  updated-dependencies:
+  - dependency-name: aquasecurity/trivy-action
+    dependency-version: 0.34.0
+    dependency-type: direct:production
+  ...
+
+* Bump docker/login-action from 3 to 4. [dependabot[bot]]
+
+  Bumps [docker/login-action](https://github.com/docker/login-action) from 3 to 4.
+  - [Release notes](https://github.com/docker/login-action/releases)
+  - [Commits](https://github.com/docker/login-action/compare/v3...v4)
+
+  ---
+  updated-dependencies:
+  - dependency-name: docker/login-action
+    dependency-version: '4'
+    dependency-type: direct:production
+    update-type: version-update:semver-major
+  ...
+
+### Continuous Integration
+
+* Bump Trivy workflows from 0.34.0 to 0.35.0. [Ben Dalling]
+
+
 ## 0.5.6 (2026-01-20)
 
 ### Build

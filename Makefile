@@ -1,7 +1,7 @@
 .EXPORT_ALL_VARIABLES:
 
 COMPOSE_FILE = tests/resources/docker-compose.yaml
-TAG = 0.5.6
+TAG = 0.5.7
 
 all: lint clean build test
 
@@ -33,6 +33,6 @@ test:
 	PYTHONPATH=. pytest
 
 prereqs:
-	docker run mcr.microsoft.com/azure-functions/python:4-python3.12 pip freeze > constraints.txt
+	docker run --entrypoint /bin/sh mcr.microsoft.com/azure-functions/python:4-python3.14-appservice -c "pip freeze" > constraints.txt
 	pip install -Uc constraints.txt -r requirements.txt -r requirements-dev.txt
 	pip check
