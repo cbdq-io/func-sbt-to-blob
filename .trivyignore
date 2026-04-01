@@ -1,4 +1,10 @@
 # Vulnerabilities found in the base image (mcr.microsoft.com/azure-functions/python:4-python3.14-appservice)
-CVE-2026-2781
+CVE-2026-1965
+CVE-2026-23865
 CVE-2026-25679
 CVE-2026-27142
+CVE-2026-2781
+CVE-2026-29111
+CVE-2026-3497
+CVE-2026-3731
+CVE-2026-3783

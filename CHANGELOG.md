@@ -1,6 +1,13 @@
 # Changelog
 
 
+## 0.5.8 (2026-04-01)
+
+### Build
+
+* Add to vulnerability list in base image. [Ben Dalling]
+
+
 ## 0.5.7 (2026-03-11)
 
 ### Fix
