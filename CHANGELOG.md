@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Unreleased
+## 0.5.8 (2026-04-01)
 
 ### Build
 
