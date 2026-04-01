@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+### Build
+
+* Add to vulnerability list in base image. [Ben Dalling]
+
+
+## 0.5.7 (2026-03-11)
+
 ### Fix
 
 * CVE-2025-8869, CVE-2025-61727, CVE-2025-61729 and CVE-2025-68973 are no longer present in the image. [Ben Dalling]
